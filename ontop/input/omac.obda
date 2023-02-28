@@ -1,0 +1,77 @@
+[PrefixDeclaration]
+:		http://www.omac.org#
+p0:		http://viaf.org/viaf/
+dbo:		http://dbpedia.org/ontology/
+dbp:		http://dbpedia.org/property/
+owl:		http://www.w3.org/2002/07/owl#
+rdf:		http://www.w3.org/1999/02/22-rdf-syntax-ns#
+xml:		http://www.w3.org/XML/1998/namespace
+xsd:		http://www.w3.org/2001/XMLSchema#
+crim:		https://crimproject.org/observations/
+obda:		https://w3id.org/obda/vocabulary#
+rdfs:		http://www.w3.org/2000/01/rdf-schema#
+skos:		http://www.w3.org/2004/02/skos/core#
+swrl:		http://www.w3.org/2003/11/swrl#
+viaf:		http://viaf.org/viaf/
+swrla:		http://swrl.stanford.edu/ontologies/3.3/swrla.owl#
+swrlb:		http://www.w3.org/2003/11/swrlb#
+dcterms:		http://purl.org/dc/terms/
+
+[MappingDeclaration] @collection [[
+mappingId	MAPID-person
+target		:{person_id} a dbo:Person ; dbp:name {name}^^xsd:string . 
+source		select * from crim_crimperson
+
+mappingId	MAPID-person-viaf
+target		:{person_id} a dbo:Person ; dbp:name {name}^^xsd:string ; <https://www.wikidata.org/wiki/Property:P214> {remarks}^^xsd:anyURI . 
+source		select * from crim_crimperson where remarks!=''
+
+mappingId	MAPID-mass
+target		:{mass_id} a :MusicalWork ; dbp:genre :{mass_id}_genre ; dcterms:title {title}^^xsd:string ; :composed_by :{composer_id} . :{mass_id}_genre a :GenreAttribute ; :has_value :{genre_id} . 
+source		select * from crim_crimmass
+
+mappingId	MAPID-mass-section
+target		:{piece_id} a :MusicalSection ; dcterms:title {title}^^xsd:string ; dbp:fullTitle {full_title}^^xsd:string ; :composed_by :{composer_id} ; :has_pdf <{pdf_links}> ; :has_mei <{mei_links}> . <{pdf_links}> a dbo:File . <{mei_links}> a dbo:File . :{mass_id} a :MusicalWork ; :has_section :{piece_id} . 
+source		select piece_id, full_title, title, mass_id, composer_id, pdf_links, mei_links from crim_crimpiece where genre_id='mass'order by piece_id
+
+mappingId	MAPID-genre
+target		:{genre_id} a :GenreValue ; rdfs:label {name}^^xsd:string . 
+source		select * from crim_crimgenre
+
+mappingId	MAPID-works-other-than-masses
+target		:{piece_id} a :MusicalWork ; dcterms:title {title}^^xsd:string ; dbp:fullTitle {full_title}^^xsd:string ; :composed_by :{composer_id} ; dbp:genre :{piece_id}_genre ; :has_pdf :{pdf_links} ; :has_mei :{mei_links} . :{piece_id}_genre a :GenreAttribute ; :has_value :{genre_id} . :{composer_id} a dbo:Person . 
+source		select * from crim_crimpiece where mass_id is null
+
+mappingId	MAPID-structure-observation
+target		:structure_obs{id} a :StructureObservation ; :concerns :{piece_id}/{ema} ; :observed_by :{observer_id} ; :has_schema :{id}_schema . :{piece_id}/{ema} a :AnalyticSegment ; :segment_of :{piece_id} ; :ema {ema}^^xsd:string . :{id}_schema a :SchemaAttribute ; :has_value :{musical_type} . 
+source		select id, ema, musical_type, observer_id, piece_id, created from crim_crimobservation where musical_type !='' order by id
+
+mappingId	MAPID-relationship-derivate
+target		:similarity_obs{id} a :SimilarityObservation ; :observed_by :{observer_id} ; :has_similarity :obs_{id}_similarity_attr ; :has_derivative :{derivative_piece_id}/{ema} . :obs_{id}_similarity_attr a :SimilarityAttribute ; :has_value :{relationship_type} . :{derivative_piece_id}/{ema} a :AnalyticSegment . 
+source		select
+			crim_crimrelationship.id,
+			crim_crimrelationship.relationship_type,
+			crim_crimrelationship.derivative_piece_id,
+			crim_crimrelationship.observer_id,
+			crim_crimobservation.ema
+			from crim_crimrelationship
+			join crim_crimobservation
+			on crim_crimrelationship.derivative_observation_id=crim_crimobservation.id;
+
+mappingId	MAPID-relationship-model
+target		:similarity_obs{id} a :SimilarityObservation ; :has_model :{model_piece_id}/{ema} . :{model_piece_id}/{ema} a :AnalyticSegment . 
+source		select
+			crim_crimrelationship.id,
+			crim_crimrelationship.relationship_type,
+			crim_crimrelationship.model_piece_id,
+			crim_crimrelationship.observer_id,
+			crim_crimobservation.ema
+			from crim_crimrelationship
+			join crim_crimobservation
+			on crim_crimrelationship.model_observation_id=crim_crimobservation.id;
+
+mappingId	MAPID-person-role
+target		:{person_id} :has_role :{role_type_id} . 
+source		select * from crim_crimrole where role_type_id !=''
+]]
+

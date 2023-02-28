@@ -1,0 +1,21 @@
+title="Ontop Portal"
+
+[[tabGroups]]
+
+name="Example queries"
+
+[[tabGroups.tabs]]
+
+name="Person-works"
+query="""
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX dbp: <http://dbpedia.org/property/>
+PREFIX dbo: <http://dbpedia.org/ontology/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX omac:<http://www.omac.org#>
+
+SELECT * WHERE {
+  ?person rdf:type dbo:Person; dbp:name ?name; dbp:composer ?work.
+  ?work dcterms:title ?workTitle; dbp:genre/omac:has_value omac:mass
+}
+"""
