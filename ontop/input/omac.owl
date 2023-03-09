@@ -21,6 +21,7 @@
         <dcterms:creator rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Emilio M. Sanfilippo, Laboratory for Applied Ontology, ISTC-CNR, Italy
 Richard Freedman, Haverford College, USA</dcterms:creator>
         <dcterms:subject rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Music and Musicology</dcterms:subject>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ontology for Analytic Claims in Music (OMAC)</rdfs:label>
     </owl:Ontology>
     
 
