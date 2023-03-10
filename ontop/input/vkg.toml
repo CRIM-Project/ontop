@@ -2,7 +2,7 @@ title="Ontop Portal"
 
 [[tabGroups]]
 
-name="Example queries"
+name="Example of SPARQL queries"
 
 [[tabGroups.tabs]]
 
@@ -11,11 +11,12 @@ query="""
 PREFIX dcterms: <http://purl.org/dc/terms/>
 PREFIX dbp: <http://dbpedia.org/property/>
 PREFIX dbo: <http://dbpedia.org/ontology/>
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX omac:<http://www.omac.org#>
+PREFIX omac: <https://www.omac.org/ontology#>
+# PREFIX : <https://www.omac.org/resource/>  # TODO: when moving to the server, uncomment here and comment/delete the next line
+PREFIX : <http://localhost:10000/resource/>
 
 SELECT * WHERE {
-  ?person rdf:type dbo:Person; dbp:name ?name; dbp:composer ?work.
-  ?work dcterms:title ?workTitle; dbp:genre/omac:has_value omac:mass
+  ?person a dbo:Person; dbp:name ?name; dbp:composer ?work.
+  ?work dcterms:title ?workTitle; dbp:genre/omac:has_value :genre-mass.
 }
 """
