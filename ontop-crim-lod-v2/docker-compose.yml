@@ -1,0 +1,58 @@
+version: '3.4'
+services:
+
+  db:
+    image: postgres:14.4
+    container_name: 'db'
+    restart: unless-stopped
+    ports:
+    - '15432:5432'
+    volumes:
+    - ./db:/docker-entrypoint-initdb.d
+    - db-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: 'db'
+      POSTGRES_USER: 'postgres'
+      POSTGRES_PASSWORD: 'postgres'
+    shm_size: 1g
+
+  ontop:
+    image: ontop/ontop:5.0.1
+    container_name: 'ontop'
+    restart: unless-stopped
+    environment:
+      ONTOP_ONTOLOGY_FILE: /opt/ontop/input/omac.owl
+      ONTOP_MAPPING_FILE: /opt/ontop/input/omac.obda
+      ONTOP_PROPERTIES_FILE: /opt/ontop/input/vkg.docker.properties
+      ONTOP_PORTAL_FILE: /opt/ontop/input/vkg.toml
+      ONTOP_DB_USER: 'postgres'
+      ONTOP_DB_PASSWORD: 'postgres'
+      ONTOP_CORS_ALLOWED_ORIGINS: '*'
+      ONTOP_WAIT_FOR: 'db:5432'
+    ports:
+    - '18080:8080'
+    volumes:
+    - ./ontop:/opt/ontop/input
+    - ./ontop/jdbc:/opt/ontop/jdbc
+    - ontop-tmp:/tmp
+    depends_on:
+    - 'db'
+
+  lodview:
+    build: lodview
+    image: lodview:2021-11-08
+    container_name: 'lodview'
+    restart: unless-stopped
+    volumes:
+    - ./lodview/conf.ttl:/usr/local/tomcat/webapps/ROOT/WEB-INF/conf.ttl           # mount LodView configuration file
+    - ./ontop/omac.owl:/usr/local/tomcat/webapps/ROOT/WEB-INF/ontologies/crim.owl  # mount Ontology
+    ports:
+    - '${LODVIEW_PORT:-10000}:8080'         # the exposed port of LodView (matching the one used in IRI templates)
+    depends_on:
+    - 'ontop'
+
+
+
+volumes:
+  db-data:
+  ontop-tmp:
