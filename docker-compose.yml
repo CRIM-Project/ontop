@@ -24,3 +24,17 @@ services:
       '/opt/ontop/entrypoint.sh',
       # '/opt/ontop/input/bin/wait-for-it.sh', 'localhost:5432', '--timeout=0', '--strict', '--',
       ]
+
+  lodview:
+    build: lodview
+    image: lodview:2021-11-08
+    container_name: 'lodview'
+    network_mode: host
+    restart: unless-stopped
+    volumes:
+    - ./lodview/conf.ttl:/usr/local/tomcat/webapps/ROOT/WEB-INF/conf.ttl           # mount LodView configuration file
+    - ./ontop/omac.owl:/usr/local/tomcat/webapps/ROOT/WEB-INF/ontologies/crim.owl  # mount Ontology
+    ports:
+    - '${LODVIEW_PORT:-10000}:8080'         # the exposed port of LodView (matching the one used in IRI templates)
+    depends_on:
+    - 'ontop'

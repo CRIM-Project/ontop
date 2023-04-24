@@ -1,0 +1,76 @@
+#@prefix :	<https://www.omac.org/resource/> .
+@prefix :	<http://localhost:10000/resource/> .
+@prefix omac:		<https://www.omac.org/ontology#> .
+@prefix dbo:		<http://dbpedia.org/ontology/> .
+@prefix dbp:		<http://dbpedia.org/property/> .
+@prefix xml:		<http://www.w3.org/XML/1998/namespace> .
+@prefix obda:		<https://w3id.org/obda/vocabulary#> .
+@prefix swrl:		<http://www.w3.org/2003/11/swrl#> .
+@prefix viaf:		<http://viaf.org/viaf/> .
+@prefix swrla:		<http://swrl.stanford.edu/ontologies/3.3/swrla.owl#> .
+@prefix swrlb:		<http://www.w3.org/2003/11/swrlb#> .
+@prefix conf: <http://lodview.it/conf#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix wdt: <http://www.wikidata.org/prop/direct/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix skos-xl: <http://www.w3.org/2008/05/skos-xl#> .
+
+<> a conf:Configuration;
+	#conf:IRInamespace <https://www.omac.org/> ;    # TODO: when moving to the server, uncomment here and comment the next line
+	conf:IRInamespace <http://localhost:10000/> ;   # (here may have to experiment a bit with the path - here / - depending on how LodView is publicly exposed on the server)
+	conf:endpoint <http://ontop:8080/sparql>;
+	conf:httpRedirectSuffix ".html";
+	#conf:httpRedirectPrefix "/page/";
+	#conf:httpRedirectExcludeList "";
+	conf:redirectionStrategy "";
+	conf:contentEncoding "UTF-8";
+	conf:authUsername "";
+	conf:authPassword "";
+	conf:defaultQueries """SELECT ?s ?p ?o { <${IRI}> ?p ?o } LIMIT 10000""" ;
+	conf:defaultRawDataQueries	"""SELECT ?s ?p ?o { <${IRI}> ?p ?o } LIMIT 10000""" ;
+	conf:defaultInversesQueries """SELECT DISTINCT ?p { ?p <${PROPERTY}> <${IRI}> } OFFSET ${STARTFROM} LIMIT 10""";
+	conf:defaultInversesCountQueries """SELECT (COUNT(DISTINCT ?s) AS ?o) ?p { ?s ?p <${IRI}> } GROUP BY ?p HAVING (?o > 0) LIMIT 100""";
+	conf:defaultInversesTest """ASK { ?s ?p <${IRI}> }""";
+	conf:defaultInverseBehaviour "close";
+	conf:publicUrlPrefix <auto>; ## or <auto>
+	conf:forceIriEncoding "auto"; ## or "decode" or "encode"
+	conf:homeUrl <https://www.omac.org/>;  # this just points to some home page, which may be the www.omac.org one
+	conf:staticResourceURL <auto>;
+    conf:mainOntologiesPrefixes :,omac:,dbp:,dbo:,xml:,xsd:,obda:,swrl:,viaf:,swrla:,swrlb:,dcterms:,wdt:,rdf:,rdfs:,owl:,skos:,skos-xl:;
+	conf:typeProperties	rdf:type;
+	conf:titleProperties dcterms:title , dbp:fullTitle, rdfs:label , skos:prefLabel , skos:altLabel, rdf:value , dbp:firstname, dbp:familyname , dbp:name;
+	conf:descriptionProperties rdfs:comment , dcterms:description , skos:definition ;
+	#conf:imageProperties foaf:depiction , schema:image ;
+	#conf:longitudeProperties geo:long;
+	#conf:latitudeProperties geo:lat;
+	conf:linkingProperties owl:sameAs , skos:exactMatch ;
+	#conf:videoProperties schema:VideoObject;
+	#conf:audioProperties schema:AudioObject;
+	conf:preferredLanguage "auto"; ## eg. "en" or "it"
+	#conf:colorPair 	"#c3a116-#ac8c13" , "#914848-#7d3e3e" , "#8a4e6a-#77435c" , "#ac8cb0-#967999" ,
+	#				"#715287-#624775" , "#606592-#53577e" , "#7eb9be-#6da2a7" , "#5b8a97-#4f7783" ,
+	#				"#86b692-#749f7e" , "#528775-#477565" , "#6d8058-#5e6f4c" , "#a1a72e-#8c9128" ,
+	#				"#c77e20-#ad6e1c" ;
+    conf:colorPair  conf:byClass;
+	conf:license "Licensed under <a href='https://creativecommons.org/licenses/by/4.0/'>Creative Commons Attribution 4.0 International</a> (CC BY 4.0)" ;
+	conf:last	".".
+
+#### uncomment only if you have configured "colors by class"
+
+<http://dbpedia.org/ontology/Person>		conf:hasColorPair	"#c3a116-#ac8c13".
+<https://www.omac.org/ontology#MusicalEntity> conf:hasColorPair "#914848-#7d3e3e".
+<https://www.omac.org/ontology#StructureObservation> conf:hasColorPair "#6d8058-#5e6f4c".
+<https://www.omac.org/ontology#SimilarityObservation> conf:hasColorPair "#6d8058-#5e6f4c".
+<https://www.omac.org/ontology#Attribute> conf:hasColorPair "#5b8a97-#4f7783".
+<https://www.omac.org/ontology#AttributeValue> conf:hasColorPair "#5b8a97-#4f7783".
+<https://www.omac.org/ontology#Role> conf:hasColorPair "#5b8a97-#4f7783".
+
+##	ontology:Place	conf:hasColorPair	"#715287-#624775".
+##	<http://dbpedia.org/ontology/Work>		conf:hasColorPair	"#914848-#7d3e3e".
+##	<http://dbpedia.org/ontology/Organisation>	conf:hasColorPair	"#6d8058-#5e6f4c".
+##	<http://dbpedia.org/ontology/Event>	conf:hasColorPair	"#5b8a97-#4f7783".
+##	<http://lodview.it/conf#otherClasses>	conf:hasColorPair	"#528775-#477565".
