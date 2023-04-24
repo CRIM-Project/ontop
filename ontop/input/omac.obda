@@ -1,5 +1,5 @@
 [PrefixDeclaration]
-:		http://localhost:10000/resource/
+:		https://data.crimproject.org/
 dbo:		http://dbpedia.org/ontology/
 dbp:		http://dbpedia.org/property/
 owl:		http://www.w3.org/2002/07/owl#
@@ -8,7 +8,7 @@ wdt:		http://www.wikidata.org/prop/direct/
 xml:		http://www.w3.org/XML/1998/namespace
 xsd:		http://www.w3.org/2001/XMLSchema#
 obda:		https://w3id.org/obda/vocabulary#
-omac:		https://www.omac.org/ontology#
+omac:		https://omac.crimproject.org/
 rdfs:		http://www.w3.org/2000/01/rdf-schema#
 skos:		http://www.w3.org/2004/02/skos/core#
 swrl:		http://www.w3.org/2003/11/swrl#
@@ -19,8 +19,8 @@ dcterms:		http://purl.org/dc/terms/
 
 [MappingDeclaration] @collection [[
 mappingId	MAPID-person
-target		:person-{person_id} a dbo:Person ; dbp:name {name}^^xsd:string . 
-source		select * from crim_crimperson
+target		:person-{person_id} a dbo:Person ; dbp:name {name}^^xsd:string ; rdfs:label {name}^^xsd:string . 
+source		select person_id, name from crim_crimperson
 
 mappingId	MAPID-person-viaf
 target		:person-{person_id} a dbo:Person ; dbp:name {name}^^xsd:string ; wdt:P214 {remarks}^^xsd:anyURI . 
@@ -28,7 +28,7 @@ source		select * from crim_crimperson where remarks!=''
 
 mappingId	MAPID-mass
 target		:me-{mass_id} a omac:MusicalWork ; dbp:genre :genre-{mass_id} ; dcterms:title {title}^^xsd:string ; omac:composed_by :person-{composer_id} . :genre-{mass_id} a omac:GenreAttribute ; rdfs:label "genre of {mass_id}"^^xsd:string ; omac:has_value :genre-{genre_id} . :genre-{genre_id} a omac:GenreValue ; rdfs:label {genre_id}^^xsd:string . 
-source		select * from crim_crimmass
+source		select mass_id, title, composer_id, genre_id from crim_crimmass
 
 mappingId	MAPID-mass-section
 target		:me-{piece_id} a omac:MusicalSection ; dcterms:title {title}^^xsd:string ; dbp:fullTitle {full_title}^^xsd:string ; omac:composed_by :person-{composer_id} ; omac:has_pdf <{pdf_links}> ; omac:has_mei <{mei_links}> . <{pdf_links}> a dbo:File . <{mei_links}> a dbo:File . :me-{mass_id} a omac:MusicalWork ; omac:has_section :me-{piece_id} . 

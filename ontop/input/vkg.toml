@@ -11,9 +11,8 @@ query="""
 PREFIX dcterms: <http://purl.org/dc/terms/>
 PREFIX dbp: <http://dbpedia.org/property/>
 PREFIX dbo: <http://dbpedia.org/ontology/>
-PREFIX omac: <https://www.omac.org/ontology#>
-# PREFIX : <https://www.omac.org/resource/>  # TODO: when moving to the server, uncomment here and comment/delete the next line
-PREFIX : <http://localhost:10000/resource/>
+PREFIX :<https://data.crimproject.org/>
+PREFIX omac:<https://omac.crimproject.org/>
 
 SELECT * WHERE {
   ?person a dbo:Person; dbp:name ?name; dbp:composer ?work.
