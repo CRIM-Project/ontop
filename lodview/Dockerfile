@@ -15,7 +15,8 @@ RUN git clone https://github.com/LodLive/LodView.git ; \
 FROM tomcat:9.0.71-jre11-temurin
 ENV CATALINA_OPTS="-XX:+UseSerialGC"
 COPY --from=builder /LodView/target/lodview /usr/local/tomcat/webapps/ROOT
-RUN echo -e \
+RUN sed -i 's/port="8080"/port="8888"/' /usr/local/tomcat/conf/server.xml && \
+    echo -e \
     "handlers = java.util.logging.ConsoleHandler\n" \
     ".handlers = java.util.logging.ConsoleHandler\n" \
     ".level = WARNING\n" \
@@ -23,4 +24,4 @@ RUN echo -e \
     "java.util.logging.ConsoleHandler.formatter = java.util.logging.SimpleFormatter\n" \
     "java.util.logging.ConsoleHandler.encoding = UTF-8\n" > /usr/local/tomcat/conf/logging.properties
 CMD ["catalina.sh", "run"]
-EXPOSE 8080 8009
+EXPOSE 8888 8009
