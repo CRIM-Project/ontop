@@ -20,7 +20,6 @@
 
 <> a conf:Configuration;
 	conf:IRInamespace <https://data.crimproject.org/> ;    # TODO: when moving to the server, uncomment here and comment the next line
-	#conf:IRInamespace <http://localhost:10000/> ;   # (here may have to experiment a bit with the path - here / - depending on how LodView is publicly exposed on the server)
 	conf:endpoint <https://omac.crimproject.org/sparql>;
 	conf:httpRedirectSuffix ".html";
 	#conf:httpRedirectPrefix "/page/";
@@ -37,7 +36,7 @@
 	conf:defaultInverseBehaviour "close";
 	conf:publicUrlPrefix <auto>; ## or <auto>
 	conf:forceIriEncoding "auto"; ## or "decode" or "encode"
-	conf:homeUrl <https://www.omac.org/>;  # this just points to some home page, which may be the www.omac.org one
+	conf:homeUrl <https://crimproject.org/about/linked_data/>;  # this just points to some home page, which may be the www.omac.org one
 	conf:staticResourceURL <auto>;
     conf:mainOntologiesPrefixes :,omac:,dbp:,dbo:,xml:,xsd:,obda:,swrl:,viaf:,swrla:,swrlb:,dcterms:,wdt:,rdf:,rdfs:,owl:,skos:,skos-xl:;
 	conf:typeProperties	rdf:type;
@@ -61,12 +60,12 @@
 #### uncomment only if you have configured "colors by class"
 
 <http://dbpedia.org/ontology/Person>		conf:hasColorPair	"#c3a116-#ac8c13".
-<https://www.omac.org/ontology#MusicalEntity> conf:hasColorPair "#914848-#7d3e3e".
-<https://www.omac.org/ontology#StructureObservation> conf:hasColorPair "#6d8058-#5e6f4c".
-<https://www.omac.org/ontology#SimilarityObservation> conf:hasColorPair "#6d8058-#5e6f4c".
-<https://www.omac.org/ontology#Attribute> conf:hasColorPair "#5b8a97-#4f7783".
-<https://www.omac.org/ontology#AttributeValue> conf:hasColorPair "#5b8a97-#4f7783".
-<https://www.omac.org/ontology#Role> conf:hasColorPair "#5b8a97-#4f7783".
+<https://omac.crimproject.org/MusicalEntity> conf:hasColorPair "#914848-#7d3e3e".
+<https://omac.crimproject.org/StructureObservation> conf:hasColorPair "#6d8058-#5e6f4c".
+<https://omac.crimproject.org/SimilarityObservation> conf:hasColorPair "#6d8058-#5e6f4c".
+<https://omac.crimproject.org/Attribute> conf:hasColorPair "#5b8a97-#4f7783".
+<https://omac.crimproject.org/AttributeValue> conf:hasColorPair "#5b8a97-#4f7783".
+<https://omac.crimproject.org/Role> conf:hasColorPair "#5b8a97-#4f7783".
 
 ##	ontology:Place	conf:hasColorPair	"#715287-#624775".
 ##	<http://dbpedia.org/ontology/Work>		conf:hasColorPair	"#914848-#7d3e3e".
