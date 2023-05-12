@@ -32,7 +32,7 @@ services:
     restart: unless-stopped
     volumes:
     - ./lodview/conf.ttl:/usr/local/tomcat/webapps/ROOT/WEB-INF/conf.ttl           # mount LodView configuration file
-    - ./ontop/omac.owl:/usr/local/tomcat/webapps/ROOT/WEB-INF/ontologies/crim.owl  # mount Ontology
+    - ./ontop/input/omac.owl:/usr/local/tomcat/webapps/ROOT/WEB-INF/ontologies/crim.owl  # mount Ontology
     # ports:
     # - '${LODVIEW_PORT:-10000}:9090'         # the exposed port of LodView (matching the one used in IRI templates)
     depends_on:
