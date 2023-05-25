@@ -19,8 +19,9 @@
 @prefix skos-xl: <http://www.w3.org/2008/05/skos-xl#> .
 
 <> a conf:Configuration;
-	conf:IRInamespace <https://data.crimproject.org/> ;    # TODO: when moving to the server, uncomment here and comment the next line
-	conf:endpoint <https://omac.crimproject.org/sparql>;
+	conf:IRInamespace <https://data.crimproject.org/> ; 
+	#conf:endpoint <https://omac.crimproject.org/sparql>;
+	conf:endpoint <https://lod.crimproject.org/sparql>;
 	conf:httpRedirectSuffix ".html";
 	#conf:httpRedirectPrefix "/page/";
 	#conf:httpRedirectExcludeList "";
