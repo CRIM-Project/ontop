@@ -1,4 +1,4 @@
-@prefix :	<https://data.crimproject.org/> .
+@prefix :		<https://data.crimproject.org/> .
 @prefix omac:		<https://omac.crimproject.org/> .
 @prefix dbo:		<http://dbpedia.org/ontology/> .
 @prefix dbp:		<http://dbpedia.org/property/> .
@@ -17,11 +17,12 @@
 @prefix wdt: <http://www.wikidata.org/prop/direct/> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix skos-xl: <http://www.w3.org/2008/05/skos-xl#> .
+@prefix schema: <https://schema.org/>.
 
 <> a conf:Configuration;
-	conf:IRInamespace <https://data.crimproject.org/> ; 
-	#conf:endpoint <https://omac.crimproject.org/sparql>;
-	conf:endpoint <https://lod.crimproject.org/sparql>;
+	conf:IRInamespace <https://data.crimproject.org/> ;    # TODO: when moving to the server, uncomment here and comment the next line
+	#conf:IRInamespace <http://localhost:10000/> ;   # (here may have to experiment a bit with the path - here / - depending on how LodView is publicly exposed on the server)
+	conf:endpoint <http://ontop:8080/sparql>;
 	conf:httpRedirectSuffix ".html";
 	#conf:httpRedirectPrefix "/page/";
 	#conf:httpRedirectExcludeList "";
@@ -37,11 +38,11 @@
 	conf:defaultInverseBehaviour "close";
 	conf:publicUrlPrefix <auto>; ## or <auto>
 	conf:forceIriEncoding "auto"; ## or "decode" or "encode"
-	conf:homeUrl <https://crimproject.org/about/linked_data/>;  # this just points to some home page, which may be the www.omac.org one
+	conf:homeUrl <https://www.omac.org/>;  # this just points to some home page, which may be the www.omac.org one
 	conf:staticResourceURL <auto>;
-    conf:mainOntologiesPrefixes :,omac:,dbp:,dbo:,xml:,xsd:,obda:,swrl:,viaf:,swrla:,swrlb:,dcterms:,wdt:,rdf:,rdfs:,owl:,skos:,skos-xl:;
+    conf:mainOntologiesPrefixes :,omac:,schema:,dbp:,dbo:,xml:,xsd:,obda:,swrl:,viaf:,swrla:,swrlb:,dcterms:,wdt:,rdf:,rdfs:,owl:,skos:,skos-xl:;
 	conf:typeProperties	rdf:type;
-	conf:titleProperties dcterms:title , dbp:fullTitle, rdfs:label , skos:prefLabel , skos:altLabel, rdf:value , dbp:firstname, dbp:familyname , dbp:name;
+	conf:titleProperties dcterms:title , dbp:fullTitle, rdfs:label , skos:prefLabel , skos:altLabel, rdf:value , dbp:firstname, dbp:familyname , dbp:name, schema:name, schema:givenName, schema:familyName;
 	conf:descriptionProperties rdfs:comment , dcterms:description , skos:definition ;
 	#conf:imageProperties foaf:depiction , schema:image ;
 	#conf:longitudeProperties geo:long;
@@ -60,16 +61,10 @@
 
 #### uncomment only if you have configured "colors by class"
 
-<http://dbpedia.org/ontology/Person>		conf:hasColorPair	"#c3a116-#ac8c13".
-<https://omac.crimproject.org/MusicalEntity> conf:hasColorPair "#914848-#7d3e3e".
+<https://schema.org/Person> conf:hasColorPair	"#c3a116-#ac8c13".
+<https://omac.crimproject.org/MusicalExpression> conf:hasColorPair "#914848-#7d3e3e".
 <https://omac.crimproject.org/StructureObservation> conf:hasColorPair "#6d8058-#5e6f4c".
 <https://omac.crimproject.org/SimilarityObservation> conf:hasColorPair "#6d8058-#5e6f4c".
 <https://omac.crimproject.org/Attribute> conf:hasColorPair "#5b8a97-#4f7783".
 <https://omac.crimproject.org/AttributeValue> conf:hasColorPair "#5b8a97-#4f7783".
 <https://omac.crimproject.org/Role> conf:hasColorPair "#5b8a97-#4f7783".
-
-##	ontology:Place	conf:hasColorPair	"#715287-#624775".
-##	<http://dbpedia.org/ontology/Work>		conf:hasColorPair	"#914848-#7d3e3e".
-##	<http://dbpedia.org/ontology/Organisation>	conf:hasColorPair	"#6d8058-#5e6f4c".
-##	<http://dbpedia.org/ontology/Event>	conf:hasColorPair	"#5b8a97-#4f7783".
-##	<http://lodview.it/conf#otherClasses>	conf:hasColorPair	"#528775-#477565".
