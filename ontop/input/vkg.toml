@@ -6,16 +6,20 @@ name="Example of SPARQL queries"
 
 [[tabGroups.tabs]]
 
-name="Person-works"
+name="Composers for masses"
 query="""
-PREFIX dcterms: <http://purl.org/dc/terms/>
-PREFIX dbp: <http://dbpedia.org/property/>
-PREFIX dbo: <http://dbpedia.org/ontology/>
-PREFIX :<https://data.crimproject.org/>
-PREFIX omac:<https://omac.crimproject.org/>
+prefix dbp: <http://dbpedia.org/property/>
+prefix dcterms: <http://purl.org/dc/terms/>
+prefix crdata: <https://data.crimproject.org/>
+prefix omac: <https://omac.crimproject.org/>
+PREFIX schema: <https://schema.org/>
 
-SELECT * WHERE {
-  ?person a dbo:Person; dbp:name ?name; dbp:composer ?work.
-  ?work dcterms:title ?workTitle; dbp:genre/omac:has_value :genre-mass.
-}
+SELECT *
+{?composition a omac:MusicalExpression; 
+      dcterms:title ?title;
+      dbp:genre/omac:hasValue crdata:genre-mass;
+               dbp:composer/schema:name ?composer_name. 
+
+} order by ?composition
+
 """
