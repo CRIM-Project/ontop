@@ -23,6 +23,7 @@ prefix data: <https://data.crimproject.org/>
 
 
 ## Query 1)
+Select persons and their names. Retrieve their VIAF ids and roles if available. 
 
 ```sparql
 SELECT ?person ?person_name ?role ?viaf WHERE
@@ -33,5 +34,4 @@ optional
 optional
 {?person <http://www.wikidata.org/prop/direct/P214> ?viaf}
 } order by ?person
-
 ```
