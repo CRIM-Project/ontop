@@ -7,7 +7,7 @@ The Endpoint is available at: https://lod.crimproject.org/
 
 You can copy-paste these queries in the SPARQL Endpoint available at the link above
 
-List of namespaces used in the queries:
+## List of namespaces used in the queries:
 
 ```sparql
 prefix xsd: <http://www.w3.org/2001/XMLSchema#>
@@ -22,10 +22,10 @@ prefix data: <https://data.crimproject.org/>
 ```
 
 
-Query 1)
+## Query 1)
 
 ```sparql
-SELECT ?person ?person_name ?role ?viaf
+SELECT ?person ?person_name ?role ?viaf WHERE
  {?person a schema:Person;
   schema:name ?person_name.
 optional
