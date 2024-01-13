@@ -115,6 +115,27 @@ omac:concernsSimilarity/rdfs:label ?similarity.
 ?derivative a omac:AnalyticSegment}
 ```
 
+## Query 7)
+Select music expressions standing in a model-derivative relation.
+
+```sparql
+SELECT ?obsSim ?model ?modelTitle ?derivative ?derivativeTitle
+WHERE
+{?obsSim a omac:SimilarityObservation;
+omac:concernsModel ?modelSeg;
+omac:concernsDerivative ?derivSeg.
+  
+?derivSeg omac:segmentOf ?derivative.    
+?modelSeg omac:segmentOf ?model.
+?model omac:modelFor ?derivative.
+
+ ?model dbp:fullTitle ?modelTitle.
+?derivative dbp:fullTitle ?derivativeTitle}
+```
+
+
+
+
 
 
 
