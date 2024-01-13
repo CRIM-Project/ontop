@@ -5,7 +5,7 @@ The Endpoint is available at: https://lod.crimproject.org/
 
 # Examples of SPARQL queries
 
-You can copy-paste these queries in the SPARQL Endpoint available at the link above
+Copy-paste the queries in the SPARQL Endpoint available at the link above
 
 ## List of namespaces used in the queries:
 
@@ -82,6 +82,39 @@ dbp:composer/schema:name ?composerName;
 FILTER(?vgenre!= data:genre-mass)
 } order by ?vgenre
 ```
+
+## Query 5)
+Select structure observations, the analytic segment, attribute, and attribute value they concern. 
+Retrieve also the fulltitle of the composition to which the segment is related.
+
+```sparql
+SELECT ?strObs ?segment ?composition ?title
+?schemaValue WHERE
+{?strObs a omac:StructureObservation;
+omac:concernsSegment ?segment;
+omac:concernsAttribute ?schemaAttr;
+omac:concernsAttributeValue ?schemaValue.
+  
+?segment a omac:AnalyticSegment;
+omac:segmentOf ?composition.
+?composition dbp:fullTitle ?title}
+```
+
+## Query 6)
+Select similarity observations with the models and derivatives they concern, and the similarity type they ascribe.
+
+```sparql
+SELECT ?simObs ?similarity ?model ?derivative 
+WHERE
+{?simObs a omac:SimilarityObservation;
+omac:concernsModel ?model;
+omac:concernsDerivative ?derivative;
+omac:concernsSimilarity/rdfs:label ?similarity.
+  
+?model a omac:AnalyticSegment.
+?derivative a omac:AnalyticSegment}
+```
+
 
 
 
