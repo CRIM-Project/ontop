@@ -51,9 +51,20 @@ SELECT ?composer ?composerName ?composition  ?compositionTitle
 } order by ?composer
 ```
 
+## Query 3)
+```sparql
+SELECT ?composition ?compositionTitle ?section ?sectionTitle ?sectionFullTitle
+{
+?composition a omac:MusicExpression;
+dcterms:title ?compositionTitle;
+dbp:genre/omac:hasValue data:genre-mass;
+omac:hasSection ?section.
 
+?section dcterms:title ?sectionTitle;
+  dbp:fullTitle ?sectionFullTitle
 
-
+} order by ?composition
+```
 
 
 
