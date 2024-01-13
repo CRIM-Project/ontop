@@ -52,6 +52,8 @@ SELECT ?composer ?composerName ?composition  ?compositionTitle
 ```
 
 ## Query 3)
+Select masses and their sections with title and fulltitle.
+
 ```sparql
 SELECT ?composition ?compositionTitle ?section ?sectionTitle ?sectionFullTitle
 {
@@ -66,6 +68,20 @@ omac:hasSection ?section.
 } order by ?composition
 ```
 
+## Query 4)
+Select music expressions that are not masses, their title, fulltitle, and composer.
+
+```sparql
+SELECT ?composition ?title ?fulltitle ?vgenre ?composerName WHERE
+{?composition a omac:MusicExpression;
+dcterms:title ?title;
+dbp:fullTitle ?fulltitle;
+dbp:genre/omac:hasValue ?vgenre;
+dbp:composer/schema:name ?composerName;
+
+FILTER(?vgenre!= data:genre-mass)
+} order by ?vgenre
+```
 
 
 
