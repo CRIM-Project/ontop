@@ -35,3 +35,26 @@ optional
 {?person <http://www.wikidata.org/prop/direct/P214> ?viaf}
 } order by ?person
 ```
+
+## Query 2)
+Select persons who are composers of masses. For masses, retrieve their titles.  
+
+```sparql
+SELECT ?composer ?composerName ?composition  ?compositionTitle
+{?composer a schema:Person;
+  	schema:name ?composerName;
+  	omac:composerOf ?composition.
+  
+?composition a omac:MusicExpression;
+   dcterms:title ?compositionTitle;
+    dbp:genre/omac:hasValue data:genre-mass.
+} order by ?composer
+```
+
+
+
+
+
+
+
+
