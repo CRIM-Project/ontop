@@ -34,8 +34,11 @@ PREFIX schema: <https://schema.org/>
 SELECT ?composition ?title ?genreLabel ?composerName WHERE
 {?composition a omac:MusicComposition; 
       dcterms:title ?title;
-      omac:hasAttribute/omac:hasAttributeValue/rdfs:label ?genreLabel;
+      omac:hasAttribute ?genre;
        omac:hasComposer/schema:name ?composerName.
+
+?genre a omac:GenreAttribute; 
+      omac:hasAttributeValue/rdfs:label ?genreLabel.
 
 } order by ?genreLabel
 """
@@ -55,7 +58,7 @@ SELECT ?composition ?title ?genreLabel ?composerName WHERE
       omac:hasAttribute/omac:hasAttributeValue ?genreValue;
       omac:hasComposer/schema:name ?composerName.
   		?genreValue rdfs:label ?genreLabel.
-      FILTER (?genreValue != data:genre-mass)
+      FILTER (?genreValue != <https://data.crimproject.org/genre/mass>)
 
 } order by ?genreLabel
 """
@@ -117,8 +120,7 @@ omac:hasAttributeValueArg ?schemaValue.
 ?segment a omac:MusicSegment;
 omac:segmentOf ?piece.
 
-}
-order by ?segment
+}order by ?segment
 """
 
 [[tabGroups.tabs]]
