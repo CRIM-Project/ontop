@@ -61,9 +61,13 @@
 #### uncomment only if you have configured "colors by class"
 
 <https://schema.org/Person> conf:hasColorPair	"#c3a116-#ac8c13".
-<https://omac.crimproject.org/MusicalExpression> conf:hasColorPair "#914848-#7d3e3e".
-<https://omac.crimproject.org/StructureObservation> conf:hasColorPair "#6d8058-#5e6f4c".
-<https://omac.crimproject.org/SimilarityObservation> conf:hasColorPair "#6d8058-#5e6f4c".
+<https://omac.crimproject.org/MusicComposition> conf:hasColorPair "#914848-#7d3e3e".
+<https://omac.crimproject.org/MusicSection> conf:hasColorPair "#914848-#7d3e3e".
+<https://omac.crimproject.org/MusicSubsection> conf:hasColorPair "#914848-#7d3e3e".
+<https://omac.crimproject.org/MusicSegment> conf:hasColorPair "#914848-#7d3e3e".
+<https://omac.crimproject.org/Claim> conf:hasColorPair "#6d8058-#5e6f4c".
+<https://omac.crimproject.org/StructureClaim> conf:hasColorPair "#6d8058-#5e6f4c".
+<https://omac.crimproject.org/SimilarityClaim> conf:hasColorPair "#6d8058-#5e6f4c".
 <https://omac.crimproject.org/Attribute> conf:hasColorPair "#5b8a97-#4f7783".
 <https://omac.crimproject.org/AttributeValue> conf:hasColorPair "#5b8a97-#4f7783".
-<https://omac.crimproject.org/Role> conf:hasColorPair "#5b8a97-#4f7783".
+<https://omac.crimproject.org/SocialRole> conf:hasColorPair "#5b8a97-#4f7783".
