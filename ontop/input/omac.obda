@@ -20,37 +20,37 @@ dcterms:		http://purl.org/dc/terms/
 
 [MappingDeclaration] @collection [[
 mappingId	MAPID-person
-target		:person-{person_id} a schema:Person ; schema:name {name}^^xsd:string ; rdfs:label {name}^^xsd:string . 
+target		:person/{person_id} a schema:Person ; schema:name {name}^^xsd:string ; rdfs:label {name}^^xsd:string . 
 source		select person_id, name from crim_crimperson order by person_id
 
 mappingId	MAPID-person-viaf
-target		:person-{person_id} a schema:Person ; schema:name {name}^^xsd:string ; rdfs:label {name}^^xsd:string ; wdt:P214 {remarks}^^xsd:anyURI . 
+target		:person/{person_id} a schema:Person ; schema:name {name}^^xsd:string ; rdfs:label {name}^^xsd:string ; wdt:P214 {remarks}^^xsd:anyURI . 
 source		select person_id,name, remarks from crim_crimperson where remarks!=''
 
 mappingId	MAPID-mass
-target		:source-{mass_id} a omac:MusicComposition ; dcterms:title {title}^^xsd:string ; omac:hasComposer :person-{composer_id} ; omac:hasAttribute :genre-{mass_id} . :genre-{mass_id} a omac:GenreAttribute ; rdfs:label "genre of {mass_id}"^^xsd:string ; omac:hasAttributeValue :genre-{genre_id} . :genre-{genre_id} a omac:GenreValue ; rdfs:label {genre_id}^^xsd:string . :person-{composer_id} a schema:Person . 
+target		:source/{mass_id} a omac:MusicComposition ; dcterms:title {title}^^xsd:string ; omac:hasComposer :person/{composer_id} ; omac:hasAttribute :attribute/{mass_id}-genre . :attribute/{mass_id}-genre a omac:GenreAttribute ; rdfs:label "genre of {mass_id}"^^xsd:string ; omac:hasAttributeValue :value/{genre_id} . :value/{genre_id} a omac:GenreValue ; rdfs:label {genre_id}^^xsd:string . :person/{composer_id} a schema:Person . 
 source		select mass_id, title, composer_id, genre_id from crim_crimmass
 			order by composer_id
 
 mappingId	MAPID-works-other-than-masses
-target		:source-{piece_id} a omac:MusicComposition ; dcterms:title {title}^^xsd:string ; dbp:fullTitle {full_title}^^xsd:string ; omac:hasComposer :person-{composer_id} ; omac:hasAttribute :genre-{piece_id} . :genre-{piece_id} a omac:GenreAttribute ; rdfs:label "genre of {piece_id}"^^xsd:string ; omac:hasAttributeValue :genre-{genre_id} . :genre-{genre_id} a omac:GenreValue ; rdfs:label {genre_id}^^xsd:string . :person-{composer_id} a schema:Person . 
+target		:source/{piece_id} a omac:MusicComposition ; dcterms:title {title}^^xsd:string ; dbp:fullTitle {full_title}^^xsd:string ; omac:hasComposer :person/{composer_id} ; omac:hasAttribute :attribute/{piece_id}-genre . :attribute/{piece_id}-genre a omac:GenreAttribute ; rdfs:label "genre of {piece_id}"^^xsd:string ; omac:hasAttributeValue :value/{genre_id} . :value/{genre_id} a omac:GenreValue ; rdfs:label {genre_id}^^xsd:string . :person/{composer_id} a schema:Person . 
 source		select piece_id, title, full_title, composer_id, genre_id from crim_crimpiece where genre_id !='mass'
 
 mappingId	MAPID-structure-observation
-target		:claim-structure{id} a omac:StructureClaim ; rdfs:label "claim of structure with CRIM id {id}"^^xsd:string ; omac:assertedBy :person-{observer_id} ; omac:hasMusicTextArg :segment-{piece_id}/{emamodified} ; omac:hasAttributeArg :schemaAttribute-{piece_id}/{emamodified} ; omac:hasAttributeValueArg :schemaValue-{musical_type} . :person-{observer_id} a schema:Person . :schemaAttribute-{piece_id}/{emamodified} a omac:SchemaAttribute ; omac:attributeOf :segment-{piece_id}/{emamodified} ; rdfs:label "schema attribute of segment :segment-{piece_id}/{emamodified}"^^xsd:string . :schemaValue-{musical_type} a omac:SchemaValue ; rdfs:label {musical_type}^^xsd:string . :segment-{piece_id}/{emamodified} a omac:MusicSegment ; omac:segmentOf :source-{piece_id} ; rdfs:label "segment of :source-{piece_id}"^^xsd:string ; omac:emaIdentifier {ema}^^xsd:string . 
+target		:claim/{id}-structure a omac:StructureClaim ; rdfs:label "claim of structure with CRIM id {id}"^^xsd:string ; omac:assertedBy :person/{observer_id} ; omac:hasMusicTextArg :source/{piece_id}/{emamodified}-segment ; omac:hasAttributeArg :attribute/{piece_id}/{emamodified}-schema ; omac:hasAttributeValueArg :value/{musical_type} . :person/{observer_id} a schema:Person . :attribute/{piece_id}/{emamodified}-schema a omac:SchemaAttribute ; omac:attributeOf :source/{piece_id}/{emamodified}-segment ; rdfs:label "schema attribute of segment :source/{piece_id}/{emamodified}-segment"^^xsd:string . :value/{musical_type} a omac:SchemaValue ; rdfs:label {musical_type}^^xsd:string . :source/{piece_id}/{emamodified}-segment a omac:MusicSegment ; omac:segmentOf :source/{piece_id} ; rdfs:label "segment of :source/{piece_id}"^^xsd:string ; omac:emaIdentifier {ema}^^xsd:string . 
 source		select id,  md5(ema) as emamodified, ema, musical_type, observer_id, piece_id from crim_crimobservation where musical_type !='' order by piece_id
 
 mappingId	MAPID-person-role
-target		:person-{person_id} a schema:Person ; omac:hasRole :role-{role_type_id} . :role-{role_type_id} a omac:SocialRole ; rdfs:label {role_type_id}^^xsd:string . 
+target		:person/{person_id} a schema:Person ; omac:hasRole :role/{role_type_id} . :role/{role_type_id} a omac:SocialRole ; rdfs:label {role_type_id}^^xsd:string . 
 source		select person_id, role_type_id from crim_crimrole where role_type_id !=''
 
 mappingId	MAPID-model for
-target		:source-{model_piece_id} omac:modelFor :source-{derivative_piece_id} . 
+target		:source/{model_piece_id} omac:modelFor :source/{derivative_piece_id} . 
 source		select id, relationship_type, derivative_piece_id, model_piece_id
 			from crim_crimrelationship
 
 mappingId	MAPID-similarity-claim-derivative
-target		:claim-similarity{id} a omac:SimilarityClaim ; rdfs:label "claim of similarity with CRIM id {id}"^^xsd:string ; omac:assertedBy :person-{observer_id} ; omac:hasDerivativeArg :source-{derivative_piece_id}/{emamodified} ; omac:hasSimilarityTypeArg :similarity-{relationship_type} . :similarity-{relationship_type} a omac:SimilarityType ; rdfs:label {relationship_type}^^xsd:string . :source-{derivative_piece_id}/{emamodified} a omac:MusicSegment ; omac:segmentOf :source-{derivative_piece_id} ; omac:emaIdentifier {ema}^^xsd:string . 
+target		:claim/{id}-similarity a omac:SimilarityClaim ; rdfs:label "claim of similarity with CRIM id {id}"^^xsd:string ; omac:assertedBy :person/{observer_id} ; omac:hasDerivativeArg :source/{derivative_piece_id}/{emamodified}-segment ; omac:hasSimilarityTypeArg :value/{relationship_type} . :value/{relationship_type} a omac:SimilarityType ; rdfs:label {relationship_type}^^xsd:string . :source/{derivative_piece_id}/{emamodified}-segment a omac:MusicSegment ; omac:segmentOf :source/{derivative_piece_id} ; omac:emaIdentifier {ema}^^xsd:string . 
 source		select
 			crim_crimrelationship.id,
 			crim_crimrelationship.relationship_type,
@@ -63,7 +63,7 @@ source		select
 			on crim_crimrelationship.derivative_observation_id=crim_crimobservation.id;
 
 mappingId	MAPID-similarity-claim-model
-target		:claim-similarity{id} a omac:SimilarityClaim ; omac:assertedBy :person-{observer_id} ; omac:hasModelArg :source-{model_piece_id}/{emamodified} . :source-{model_piece_id}/{emamodified} a omac:MusicSegment ; omac:segmentOf :source-{model_piece_id} ; omac:emaIdentifier {ema}^^xsd:string . 
+target		:claim/{id}-similarity a omac:SimilarityClaim ; omac:assertedBy :person/{observer_id} ; omac:hasModelArg :source/{model_piece_id}/{emamodified}-segment . :source/{model_piece_id}/{emamodified}-segment a omac:MusicSegment ; omac:segmentOf :source/{model_piece_id} ; omac:emaIdentifier {ema}^^xsd:string . 
 source		select
 			crim_crimrelationship.id,
 			crim_crimrelationship.relationship_type,
@@ -76,7 +76,7 @@ source		select
 			on crim_crimrelationship.model_observation_id=crim_crimobservation.id;
 
 mappingId	MAPID-mass-sections
-target		:source-{piece_id} a omac:MusicSection ; dcterms:title {title}^^xsd:string ; dbp:fullTitle {full_title}^^xsd:string ; omac:sectionOf :source-{mass_id} ; omac:hasComposer :person-{composer_id} . :person-{composer_id} a schema:Person . 
+target		:source/{piece_id} a omac:MusicSection ; dcterms:title {title}^^xsd:string ; dbp:fullTitle {full_title}^^xsd:string ; omac:sectionOf :source/{mass_id} ; omac:hasComposer :person/{composer_id} . :person/{composer_id} a schema:Person . 
 source		select piece_id, full_title, title, mass_id, composer_id
 			from crim_crimpiece where genre_id='mass' order by piece_id
 ]]
