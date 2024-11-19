@@ -8,6 +8,9 @@ name="Examples of SPARQL queries"
 
 name="Compositions and their composers"
 query="""
+
+## This query retrieves compositions and their composers
+
 prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 prefix dcterms: <http://purl.org/dc/terms/>
 prefix data: <https://data.crimproject.org/>
@@ -25,6 +28,9 @@ SELECT ?composition ?title ?composerName WHERE
 [[tabGroups.tabs]]
 name="Compositions and their genre"
 query="""
+
+## This query retrieves compositions, their composers and genres
+
 prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 prefix dcterms: <http://purl.org/dc/terms/>
 prefix data: <https://data.crimproject.org/>
@@ -37,15 +43,17 @@ SELECT ?composition ?title ?genreLabel ?composerName WHERE
       omac:hasAttribute ?genre;
        omac:hasComposer/schema:name ?composerName.
 
-?genre a omac:GenreAttribute; 
-      omac:hasAttributeValue/rdfs:label ?genreLabel.
+?genre omac:hasAttributeValue/rdfs:label ?genreLabel.
 
-} order by ?genreLabel
+}
 """
 
 [[tabGroups.tabs]]
 name="Compositions' genre other than mass"
 query="""
+
+## This query retrieves compositions other than masses with their composers and genres
+
 prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 prefix dcterms: <http://purl.org/dc/terms/>
 prefix data: <https://data.crimproject.org/>
@@ -55,17 +63,22 @@ PREFIX schema: <https://schema.org/>
 SELECT ?composition ?title ?genreLabel ?composerName WHERE
 {?composition a omac:MusicComposition; 
       dcterms:title ?title;
-      omac:hasAttribute/omac:hasAttributeValue ?genreValue;
+      omac:hasAttribute ?genre;
       omac:hasComposer/schema:name ?composerName.
-  		?genreValue rdfs:label ?genreLabel.
-      FILTER (?genreValue != <https://data.crimproject.org/genre/mass>)
 
-} order by ?genreLabel
+  		?genre omac:hasAttributeValue ?genreValue. 
+      ?genreValue rdfs:label ?genreLabel.
+      FILTER (?genreValue != <https://data.crimproject.org/value/mass>)
+
+} 
 """
 
 [[tabGroups.tabs]]
 name="Compositions and their sections"
 query="""
+
+## This query retrieves compositions and their sections
+
 prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 prefix dcterms: <http://purl.org/dc/terms/>
 prefix data: <https://data.crimproject.org/>
@@ -79,12 +92,15 @@ omac:hasSection ?section.
 ?section a omac:MusicSection;
 dcterms:title ?sectionTitle. 
 
-} order by ?composition
+}
 """
 
 [[tabGroups.tabs]]
 name="Claims"
 query="""
+
+## This query retrieves all claims
+
 prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 prefix dcterms: <http://purl.org/dc/terms/>
 prefix data: <https://data.crimproject.org/>
@@ -103,6 +119,9 @@ FILTER(?subclass != omac:Claim)
 [[tabGroups.tabs]]
 name="Claims of structure"
 query="""
+
+## This query retrieves claims of structure
+
 prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 prefix dcterms: <http://purl.org/dc/terms/>
 prefix data: <https://data.crimproject.org/>
@@ -116,18 +135,17 @@ omac:hasMusicTextArg ?segment;
 omac:hasAttributeArg ?schema;
 omac:hasAttributeValueArg ?schemaValue.
 
-?schema omac:attributeOf ?segment.
 ?segment a omac:MusicSegment;
 omac:segmentOf ?piece.
 
-}order by ?segment
+}
 """
 
 [[tabGroups.tabs]]
 name="Claims of similarity 1"
 query="""
 
-## This query retrieves the model and derivative *segments* identified in a similarity relationship
+## This query retrieves the model and derivative *segments* identified in a similarity claim
 
 prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 prefix dcterms: <http://purl.org/dc/terms/>
@@ -148,7 +166,7 @@ omac:hasSimilarityTypeArg ?similarityType.
 name="Claims of similarity 2"
 query="""
 
-## This query retrieves the model and derivative identified in a similarity relationship
+## This query retrieves the model and derivative identified in a similarity claim
 
 prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 prefix dcterms: <http://purl.org/dc/terms/>
@@ -168,4 +186,43 @@ omac:hasSimilarityTypeArg ?similarityType.
 ?derivative omac:segmentOf ?derivativeTxt.
 
 }
+"""
+
+[[tabGroups.tabs]]
+name="Construct example"
+query="""
+
+## This is an example of CONSTRUCT; it builds an RDF graph for masses and their sections
+
+CONSTRUCT {
+    ?composition a omac:MusicComposition; 
+      dcterms:title ?title;
+      omac:hasAttribute ?genre;
+      omac:hasComposer ?composer;
+    omac:hasSection ?section.
+
+  ?genre a omac:GenreAttribute; 
+    omac:hasAttributeValue ?genreValue; rdfs:label "mass"^^xsd:string.
+  
+  ?composer a omac:Person; schema:name ?composerName.
+  
+  ?section dcterms:title ?sectionTitle.
+}
+
+WHERE
+{?composition a omac:MusicComposition; 
+      dcterms:title ?title;
+      omac:hasAttribute ?genre;
+      omac:hasComposer ?composer;
+      omac:hasSection ?section.
+
+  ?genre omac:hasAttributeValue ?genreValue.
+  
+  ?composer schema:name ?composerName.
+  
+  ?section dcterms:title ?sectionTitle.
+  
+  FILTER (?genreValue = <https://data.crimproject.org/value/mass>)
+
+} 
 """
