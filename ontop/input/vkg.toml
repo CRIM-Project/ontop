@@ -17,12 +17,11 @@ prefix data: <https://data.crimproject.org/>
 prefix omac: <https://omac.crimproject.org/>
 PREFIX schema: <https://schema.org/>
 
-SELECT ?composition ?title ?composerName WHERE
+SELECT ?composition ?title ?composerName
 {?composition a omac:MusicComposition; 
       dcterms:title ?title;
-      omac:hasComposer/schema:name ?composerName. 
-
-} order by ?composition
+      omac:hasComposer/schema:name ?composerName 
+}
 """
 
 [[tabGroups.tabs]]
@@ -37,15 +36,11 @@ prefix data: <https://data.crimproject.org/>
 prefix omac: <https://omac.crimproject.org/>
 PREFIX schema: <https://schema.org/>
 
-SELECT ?composition ?title ?genreLabel ?composerName WHERE
+SELECT ?composition ?title ?genreValue ?composerName
 {?composition a omac:MusicComposition; 
       dcterms:title ?title;
-      omac:hasAttribute ?genre;
-       omac:hasComposer/schema:name ?composerName.
-
-?genre omac:hasAttributeValue/rdfs:label ?genreLabel.
-
-}
+      omac:hasAttribute/omac:hasAttributeValue ?genreValue;
+       omac:hasComposer/schema:name ?composerName}
 """
 
 [[tabGroups.tabs]]
@@ -60,16 +55,12 @@ prefix data: <https://data.crimproject.org/>
 prefix omac: <https://omac.crimproject.org/>
 PREFIX schema: <https://schema.org/>
 
-SELECT ?composition ?title ?genreLabel ?composerName WHERE
+SELECT ?composition ?title ?genreValue ?composerName
 {?composition a omac:MusicComposition; 
       dcterms:title ?title;
-      omac:hasAttribute ?genre;
+      omac:hasAttribute/omac:hasAttributeValue ?genreValue;
       omac:hasComposer/schema:name ?composerName.
-
-  		?genre omac:hasAttributeValue ?genreValue. 
-      ?genreValue rdfs:label ?genreLabel.
       FILTER (?genreValue != <https://data.crimproject.org/value/mass>)
-
 } 
 """
 
@@ -85,13 +76,12 @@ prefix data: <https://data.crimproject.org/>
 prefix omac: <https://omac.crimproject.org/>
 PREFIX schema: <https://schema.org/>
 
-SELECT ?composition ?title ?section ?sectionTitle WHERE
+SELECT ?composition ?title ?section ?sectionTitle
 {?composition a omac:MusicComposition;
 dcterms:title ?title;
 omac:hasSection ?section.
 ?section a omac:MusicSection;
-dcterms:title ?sectionTitle. 
-
+dcterms:title ?sectionTitle 
 }
 """
 
@@ -108,7 +98,6 @@ prefix omac: <https://omac.crimproject.org/>
 PREFIX schema: <https://schema.org/>
 
 SELECT ?claim ?subclass ?label ?observerName
-WHERE
 {?claim a omac:Claim; a ?subclass;
 rdfs:label ?label;
 omac:assertedBy/schema:name ?observerName. 
@@ -128,7 +117,7 @@ prefix data: <https://data.crimproject.org/>
 prefix omac: <https://omac.crimproject.org/>
 PREFIX schema: <https://schema.org/>
 
-SELECT ?strClaim ?personName ?segment ?piece ?schemaValue WHERE
+SELECT ?strClaim ?personName ?segment ?piece ?schemaValue
 {?strClaim a omac:StructureClaim;
 omac:assertedBy/schema:name ?personName;
 omac:hasMusicTextArg ?segment;
@@ -136,8 +125,7 @@ omac:hasAttributeArg ?schema;
 omac:hasAttributeValueArg ?schemaValue.
 
 ?segment a omac:MusicSegment;
-omac:segmentOf ?piece.
-
+omac:segmentOf ?piece
 }
 """
 
@@ -153,13 +141,13 @@ prefix data: <https://data.crimproject.org/>
 prefix omac: <https://omac.crimproject.org/>
 PREFIX schema: <https://schema.org/>
 
-SELECT ?simClaim ?personName ?model ?derivative ?similarityLabel WHERE
+SELECT ?simClaim ?personName ?model ?derivative ?similarityLabel
 {?simClaim a omac:SimilarityClaim;
 omac:assertedBy/schema:name ?personName;
 omac:hasModelArg ?model;
 omac:hasDerivativeArg ?derivative;
 omac:hasSimilarityTypeArg ?similarityType.
-?similarityType rdfs:label ?similarityLabel.} 
+?similarityType rdfs:label ?similarityLabel} 
 """
 
 [[tabGroups.tabs]]
@@ -174,7 +162,7 @@ prefix data: <https://data.crimproject.org/>
 prefix omac: <https://omac.crimproject.org/>
 PREFIX schema: <https://schema.org/>
 
-SELECT ?simClaim ?personName ?modelTxt ?derivativeTxt ?similarityLabel WHERE
+SELECT ?simClaim ?personName ?modelTxt ?derivativeTxt ?similarityLabel
 {?simClaim a omac:SimilarityClaim;
 omac:assertedBy/schema:name ?personName;
 omac:hasModelArg ?model;
@@ -183,7 +171,6 @@ omac:hasSimilarityTypeArg ?similarityType.
 ?similarityType rdfs:label ?similarityLabel.
 
 ?model omac:segmentOf ?modelTxt.
-?derivative omac:segmentOf ?derivativeTxt.
-
+?derivative omac:segmentOf ?derivativeTxt
 }
 """
