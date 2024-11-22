@@ -103,10 +103,10 @@ prefix data: <https://data.crimproject.org/>
 prefix omac: <https://omac.crimproject.org/>
 PREFIX schema: <https://schema.org/>
 
-SELECT ?claim ?subclass ?label ?observerName
+SELECT ?claim ?subclass ?label ?observer
 {?claim a omac:Claim; a ?subclass;
 rdfs:label ?label;
-omac:assertedBy/schema:name ?observerName. 
+omac:assertedBy ?observer. 
 FILTER(?subclass != omac:Claim)
 } order by ?subclass
 """
@@ -123,9 +123,9 @@ prefix data: <https://data.crimproject.org/>
 prefix omac: <https://omac.crimproject.org/>
 PREFIX schema: <https://schema.org/>
 
-SELECT ?strClaim ?personName ?segment ?piece ?schemaValue
-{?strClaim a omac:StructureClaim;
-omac:assertedBy/schema:name ?personName;
+SELECT ?claimOfStructure ?observer ?segment ?piece ?schemaValue
+{?claimOfStructure a omac:StructureClaim;
+omac:assertedBy ?observer;
 omac:hasMusicTextArg ?segment;
 omac:hasAttributeArg ?schema;
 omac:hasAttributeValueArg ?schemaValue.
@@ -147,13 +147,13 @@ prefix data: <https://data.crimproject.org/>
 prefix omac: <https://omac.crimproject.org/>
 PREFIX schema: <https://schema.org/>
 
-SELECT ?simClaim ?personName ?model ?derivative ?similarityLabel
-{?simClaim a omac:SimilarityClaim;
-omac:assertedBy/schema:name ?personName;
+SELECT ?claimOfSimilarity ?observer ?model ?derivative ?similarityType
+{?claimOfSimilarity a omac:SimilarityClaim;
+omac:assertedBy ?observer;
 omac:hasModelArg ?model;
 omac:hasDerivativeArg ?derivative;
-omac:hasSimilarityTypeArg ?similarityType.
-?similarityType rdfs:label ?similarityLabel} 
+omac:hasSimilarityTypeArg ?similarityType
+}
 """
 
 [[tabGroups.tabs]]
@@ -168,13 +168,12 @@ prefix data: <https://data.crimproject.org/>
 prefix omac: <https://omac.crimproject.org/>
 PREFIX schema: <https://schema.org/>
 
-SELECT ?simClaim ?personName ?modelTxt ?derivativeTxt ?similarityLabel
-{?simClaim a omac:SimilarityClaim;
-omac:assertedBy/schema:name ?personName;
+SELECT ?similarityClaim ?observer ?modelTxt ?derivativeTxt ?similarityType 
+{?similarityClaim a omac:SimilarityClaim;
+omac:assertedBy ?observer;
 omac:hasModelArg ?model;
 omac:hasDerivativeArg ?derivative;
 omac:hasSimilarityTypeArg ?similarityType.
-?similarityType rdfs:label ?similarityLabel.
 
 ?model omac:segmentOf ?modelTxt.
 ?derivative omac:segmentOf ?derivativeTxt
