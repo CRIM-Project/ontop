@@ -15,12 +15,12 @@ prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 prefix dcterms: <http://purl.org/dc/terms/>
 prefix data: <https://data.crimproject.org/>
 prefix omac: <https://omac.crimproject.org/>
-PREFIX schema: <https://schema.org/>
+prefix schema: <https://schema.org/>
 
-SELECT ?composition ?title ?composerName
+SELECT ?composition ?title ?composer
 {?composition a omac:MusicComposition; 
       dcterms:title ?title;
-      omac:hasComposer/schema:name ?composerName 
+      omac:hasComposer ?composer 
 }
 """
 
@@ -34,13 +34,16 @@ prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 prefix dcterms: <http://purl.org/dc/terms/>
 prefix data: <https://data.crimproject.org/>
 prefix omac: <https://omac.crimproject.org/>
-PREFIX schema: <https://schema.org/>
+prefix schema: <https://schema.org/>
 
-SELECT ?composition ?title ?genreValue ?composerName
+SELECT ?composition ?title ?genreValue
 {?composition a omac:MusicComposition; 
       dcterms:title ?title;
-      omac:hasAttribute/omac:hasAttributeValue ?genreValue;
-       omac:hasComposer/schema:name ?composerName}
+      omac:hasAttribute ?genre.
+  
+?genre a omac:GenreAttribute; 
+      omac:hasAttributeValue ?genreValue
+       }
 """
 
 [[tabGroups.tabs]]
@@ -53,15 +56,18 @@ prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 prefix dcterms: <http://purl.org/dc/terms/>
 prefix data: <https://data.crimproject.org/>
 prefix omac: <https://omac.crimproject.org/>
-PREFIX schema: <https://schema.org/>
+prefix schema: <https://schema.org/>
 
-SELECT ?composition ?title ?genreValue ?composerName
+SELECT ?composition ?title ?genreValue ?composer
 {?composition a omac:MusicComposition; 
       dcterms:title ?title;
-      omac:hasAttribute/omac:hasAttributeValue ?genreValue;
-      omac:hasComposer/schema:name ?composerName.
+      omac:hasAttribute ?genre;
+      omac:hasComposer ?composer.
+  
+ ?genre a omac:GenreAttribute; 
+       omac:hasAttributeValue ?genreValue.
       FILTER (?genreValue != <https://data.crimproject.org/value/mass>)
-} 
+      }
 """
 
 [[tabGroups.tabs]]
