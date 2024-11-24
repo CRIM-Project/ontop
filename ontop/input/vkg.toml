@@ -136,7 +136,7 @@ omac:segmentOf ?piece
 """
 
 [[tabGroups.tabs]]
-name="Claims of similarity 1"
+name="Claims of similarity"
 query="""
 
 ## This query retrieves the model and derivative *segments* identified in a similarity claim
@@ -156,26 +156,3 @@ omac:hasSimilarityTypeArg ?similarityType
 }
 """
 
-[[tabGroups.tabs]]
-name="Claims of similarity 2"
-query="""
-
-## This query retrieves the model and derivative identified in a similarity claim
-
-prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-prefix dcterms: <http://purl.org/dc/terms/>
-prefix data: <https://data.crimproject.org/>
-prefix omac: <https://omac.crimproject.org/>
-PREFIX schema: <https://schema.org/>
-
-SELECT ?similarityClaim ?observer ?modelTxt ?derivativeTxt ?similarityType 
-{?similarityClaim a omac:SimilarityClaim;
-omac:assertedBy ?observer;
-omac:hasModelArg ?model;
-omac:hasDerivativeArg ?derivative;
-omac:hasSimilarityTypeArg ?similarityType.
-
-?model omac:segmentOf ?modelTxt.
-?derivative omac:segmentOf ?derivativeTxt
-}
-"""
