@@ -1,7 +1,7 @@
 version: '3.4'
 services:
   ontop:
-    image: ontop/ontop
+    image: ontop/ontop:5.2.1
     container_name: 'ontop'
     restart: unless-stopped
     network_mode: host
@@ -11,6 +11,7 @@ services:
       ONTOP_MAPPING_FILE: /opt/ontop/input/omac.obda
       ONTOP_PROPERTIES_FILE: /opt/ontop/input/vkg.docker.properties
       ONTOP_PORTAL_FILE: /opt/ontop/input/vkg.toml
+      ONTOP_LENSES_FILE: /opt/ontop/input/lenses.json
       ONTOP_DB_URL: ${ONTOP_DB_URL} 
       ONTOP_DB_USER: ${ONTOP_DB_USER}
       ONTOP_DB_PASSWORD: ${ONTOP_DB_PASSWORD} 
