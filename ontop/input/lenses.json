@@ -1,0 +1,200 @@
+{
+    "relations": [
+        {
+            "type": "BasicLens",
+            "name": ["\"lens_crimperson\""],
+            "baseRelation": ["\"crim_crimperson\""],
+            "iriSafeConstraints": {
+                "added": [
+                    "\"person_id\""
+                ]
+            }
+        },
+        {
+            "type": "BasicLens",
+            "name": ["\"lens_crimrole\""],
+            "baseRelation": ["\"crim_crimrole\""],
+            "foreignKeys": {
+                "added": [
+                    {
+                        "from": ["\"person_id\""],
+                        "to": {
+                            "relation": ["\"lens_crimperson\""],
+                            "columns": ["\"person_id\""]
+                        }
+                    }
+                ]
+            },
+            "iriSafeConstraints": {
+                "added": [
+                    "\"person_id\"",
+                    "\"role_type_id\""
+                ]
+            }
+        },
+        {
+            "type": "BasicLens",
+            "name": ["\"lens_crimmass\""],
+            "baseRelation": ["\"crim_crimmass\""],
+            "foreignKeys": {
+                "added": [
+                    {
+                        "from": ["\"composer_id\""],
+                        "to": {
+                            "relation": ["\"lens_crimperson\""],
+                            "columns": ["\"person_id\""]
+                        }
+                    }
+                ]
+            },
+            "iriSafeConstraints": {
+                "added": [
+                    "\"genre_id\"",
+                    "\"mass_id\"",
+                    "\"composer_id\""
+                ]
+            }
+        },
+        {
+            "type": "BasicLens",
+            "name": ["\"lens_crimpiece\""],
+            "baseRelation": ["\"crim_crimpiece\""],
+            "foreignKeys": {
+                "added": [
+                    {
+                        "from": ["\"composer_id\""],
+                        "to": {
+                            "relation": ["\"lens_crimperson\""],
+                            "columns": ["\"person_id\""]
+                        }
+                    },
+                    {
+                        "from": ["\"mass_id\""],
+                        "to": {
+                            "relation": ["\"lens_crimmass\""],
+                            "columns": ["\"mass_id\""]
+                        }
+                    }
+                ]
+            },
+            "iriSafeConstraints": {
+                "added": [
+                    "\"piece_id\"",
+                    "\"genre_id\"",
+                    "\"mass_id\"",
+                    "\"composer_id\""
+                ]
+            }
+        },
+        {
+            "type": "BasicLens",
+            "name": ["\"lens_crimobservation\""],
+            "baseRelation": ["\"crim_crimobservation\""],
+            "columns": {
+                "added": [
+                    {
+                        "name": "\"emamodified\"",
+                        "expression": "CAST(MD5(\"ema\") AS TEXT)"
+                    }
+                ],
+                "hidden": []
+            },
+            "foreignKeys": {
+                "added": [
+                    {
+                        "from": ["\"observer_id\""],
+                        "to": {
+                            "relation": ["\"lens_crimperson\""],
+                            "columns": ["\"person_id\""]
+                        }
+                    },
+                    {
+                        "from": ["\"piece_id\""],
+                        "to": {
+                            "relation": ["\"lens_crimpiece\""],
+                            "columns": ["\"piece_id\""]
+                        }
+                    }
+                ]
+            },
+            "otherFunctionalDependencies": {
+                "added": [
+                    {
+                        "determinants": ["\"emamodified\""],
+                        "dependents": ["\"ema\""]
+                    },
+                    {
+                        "determinants": ["\"ema\""],
+                        "dependents": ["\"emamodified\""]
+                    }
+                ]
+            },
+            "nonNullConstraints": {
+                "added": [
+                    "\"emamodified\""
+                ]
+            },
+            "iriSafeConstraints": {
+                "added": [
+                    "\"emamodified\"",
+                    "\"piece_id\"",
+                    "\"observer_id\""
+                ]
+            }
+        },
+        {
+            "type": "BasicLens",
+            "name": ["\"lens_crimrelationship\""],
+            "baseRelation": ["\"crim_crimrelationship\""],
+            "foreignKeys": {
+                "added": [
+                    {
+                        "from": ["\"observer_id\""],
+                        "to": {
+                            "relation": ["\"lens_crimperson\""],
+                            "columns": ["\"person_id\""]
+                        }
+                    },
+                    {
+                        "from": ["\"model_piece_id\""],
+                        "to": {
+                            "relation": ["\"lens_crimpiece\""],
+                            "columns": ["\"piece_id\""]
+                        }
+                    },
+                    {
+                        "from": ["\"derivative_piece_id\""],
+                        "to": {
+                            "relation": ["\"lens_crimpiece\""],
+                            "columns": ["\"piece_id\""]
+                        }
+                    },
+                    {
+                        "from": ["\"model_observation_id\""],
+                        "to": {
+                            "relation": ["\"lens_crimobservation\""],
+                            "columns": ["\"id\""]
+                        }
+                    },
+                    {
+                        "from": ["\"derivative_observation_id\""],
+                        "to": {
+                            "relation": ["\"lens_crimobservation\""],
+                            "columns": ["\"id\""]
+                        }
+                    }
+                ]
+            },
+            "iriSafeConstraints": {
+                "added": [
+                    "\"derivative_observation_id\"",
+                    "\"derivative_piece_id\"",
+                    "\"model_observation_id\"",
+                    "\"model_piece_id\"",
+                    "\"observer_id\""
+                ]
+            }
+        }
+    ]
+}
+
