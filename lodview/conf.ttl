@@ -1,6 +1,5 @@
 @prefix : <https://data.crimproject.org/> .
-@prefix dstr: <https://data.crimproject.org/claim/structure/>.
-@prefix dsim: <https://data.crimproject.org/claim/similarity/>.
+@prefix dcl: <https://data.crimproject.org/claim/>.
 @prefix dp: <https://data.crimproject.org/person/>.
 @prefix ds: <https://data.crimproject.org/source/>.
 @prefix dm: <https://data.crimproject.org/mass/>.
