@@ -5,7 +5,6 @@
 @prefix dm: <https://data.crimproject.org/mass/>.
 @prefix dv: <https://data.crimproject.org/value/>.
 @prefix da: <https://data.crimproject.org/attribute/>.
-@prefix dseg:  <https://data.crimproject.org/segment/>.
 @prefix omac:		<https://omac.crimproject.org/> .
 @prefix dbo:		<http://dbpedia.org/ontology/> .
 @prefix dbp:		<http://dbpedia.org/property/> .
