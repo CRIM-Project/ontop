@@ -45,7 +45,7 @@
 	conf:forceIriEncoding "auto"; ## or "decode" or "encode"
 	conf:homeUrl <https://crimproject.org/about/linked_data/>;  # this just points to some home page
 	conf:staticResourceURL <auto>;
-    conf:mainOntologiesPrefixes :,omac:,dstr:,dsim:,dp:,ds:,dseg:,dv:,da:,schema:,dbp:,dbo:,xml:,xsd:,obda:,swrl:,viaf:,swrla:,swrlb:,dcterms:,wdt:,rdf:,rdfs:,owl:,skos:,skos-xl:;
+    conf:mainOntologiesPrefixes :,omac:,dcl:,dm:,dp:,ds:,dv:,da:,schema:,dbp:,dbo:,xml:,xsd:,obda:,swrl:,viaf:,swrla:,swrlb:,dcterms:,wdt:,rdf:,rdfs:,owl:,skos:,skos-xl:;
 	conf:typeProperties	rdf:type;
 	conf:titleProperties dcterms:title , dbp:fullTitle, rdfs:label , skos:prefLabel , skos:altLabel, rdf:value , dbp:firstname, dbp:familyname , dbp:name, schema:name, schema:givenName, schema:familyName;
 	conf:descriptionProperties rdfs:comment , dcterms:description , skos:definition ;
