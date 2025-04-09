@@ -8,151 +8,229 @@ name="Examples of SPARQL queries"
 
 name="Compositions and their composers"
 query="""
-
 ## This query retrieves compositions and their composers
 
-prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-prefix dcterms: <http://purl.org/dc/terms/>
-prefix data: <https://data.crimproject.org/>
-prefix omac: <https://omac.crimproject.org/>
-prefix schema: <https://schema.org/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX data: <https://data.crimproject.org/>
+PREFIX omac: <https://omac.crimproject.org/>
+PREFIX schema: <https://schema.org/>
 
-SELECT ?composition ?title ?composer
-{?composition a omac:MusicComposition; 
-      dcterms:title ?title;
-      omac:hasComposer ?composer 
+SELECT ?composition ?title ?composerName
+{
+    ?composition a omac:MusicComposition;
+        dcterms:title ?title;
+        omac:hasComposer/schema:name ?composerName.
+
 }
+ORDER BY ?composition
 """
 
 [[tabGroups.tabs]]
 name="Compositions and their genre"
 query="""
-
 ## This query retrieves compositions, their composers and genres
 
-prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-prefix dcterms: <http://purl.org/dc/terms/>
-prefix data: <https://data.crimproject.org/>
-prefix omac: <https://omac.crimproject.org/>
-prefix schema: <https://schema.org/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX data: <https://data.crimproject.org/>
+PREFIX omac: <https://omac.crimproject.org/>
+PREFIX schema: <https://schema.org/>
 
-SELECT ?composition ?title ?genreValue
-{?composition a omac:MusicComposition; 
-      dcterms:title ?title;
-      omac:hasAttribute ?genre.
-  
-?genre a omac:GenreAttribute; 
-      omac:hasAttributeValue ?genreValue
-       }
+SELECT ?composition ?title ?genreLabel ?composerName
+{
+    ?composition a omac:MusicComposition;
+        dcterms:title ?title;
+        omac:hasAttribute ?genre;
+        omac:hasComposer/schema:name ?composerName.
+
+    ?genre omac:hasAttributeValue/rdfs:label ?genreLabel.
+}
 """
 
 [[tabGroups.tabs]]
 name="Compositions' genre other than mass"
 query="""
-
 ## This query retrieves compositions other than masses with their composers and genres
 
-prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-prefix dcterms: <http://purl.org/dc/terms/>
-prefix data: <https://data.crimproject.org/>
-prefix omac: <https://omac.crimproject.org/>
-prefix schema: <https://schema.org/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX data: <https://data.crimproject.org/>
+PREFIX omac: <https://omac.crimproject.org/>
+PREFIX schema: <https://schema.org/>
 
-SELECT ?composition ?title ?genreValue ?composer
-{?composition a omac:MusicComposition; 
-      dcterms:title ?title;
-      omac:hasAttribute ?genre;
-      omac:hasComposer ?composer.
-  
- ?genre a omac:GenreAttribute; 
-       omac:hasAttributeValue ?genreValue.
-      FILTER (?genreValue != <https://data.crimproject.org/value/mass>)
-      }
+SELECT ?composition ?title ?genreLabel ?composerName
+{
+    ?composition a omac:MusicComposition;
+        dcterms:title ?title;
+        omac:hasAttribute ?genre;
+        omac:hasComposer/schema:name ?composerName.
+
+  	?genre omac:hasAttributeValue ?genreValue.
+
+    ?genreValue rdfs:label ?genreLabel.
+
+    FILTER (?genreValue != <https://data.crimproject.org/value/genre/mass>)
+}
 """
 
 [[tabGroups.tabs]]
 name="Compositions and their sections"
 query="""
-
 ## This query retrieves compositions and their sections
 
-prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-prefix dcterms: <http://purl.org/dc/terms/>
-prefix data: <https://data.crimproject.org/>
-prefix omac: <https://omac.crimproject.org/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX data: <https://data.crimproject.org/>
+PREFIX omac: <https://omac.crimproject.org/>
 PREFIX schema: <https://schema.org/>
 
 SELECT ?composition ?title ?section ?sectionTitle
-{?composition a omac:MusicComposition;
-dcterms:title ?title;
-omac:hasSection ?section.
-?section a omac:MusicSection;
-dcterms:title ?sectionTitle 
+{
+    ?composition a omac:MusicComposition;
+        dcterms:title ?title;
+        omac:hasSection ?section.
+
+    ?section a omac:MusicSection;
+        dcterms:title ?sectionTitle.
 }
 """
 
 [[tabGroups.tabs]]
 name="Claims"
 query="""
-
 ## This query retrieves all claims
 
-prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-prefix dcterms: <http://purl.org/dc/terms/>
-prefix data: <https://data.crimproject.org/>
-prefix omac: <https://omac.crimproject.org/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX data: <https://data.crimproject.org/>
+PREFIX omac: <https://omac.crimproject.org/>
 PREFIX schema: <https://schema.org/>
 
-SELECT ?claim ?subclass ?label ?observer
-{?claim a omac:Claim; a ?subclass;
-rdfs:label ?label;
-omac:assertedBy ?observer. 
-FILTER(?subclass != omac:Claim)
-} order by ?subclass
+SELECT ?claim ?subclass ?label ?observerName
+{
+    ?claim a omac:Claim, ?subclass;
+        rdfs:label ?label;
+        omac:assertedBy/schema:name ?observerName.
+    FILTER(?subclass != omac:Claim)
+}
+ORDER BY ?subclass
 """
 
 [[tabGroups.tabs]]
 name="Claims of structure"
 query="""
-
 ## This query retrieves claims of structure
 
-prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-prefix dcterms: <http://purl.org/dc/terms/>
-prefix data: <https://data.crimproject.org/>
-prefix omac: <https://omac.crimproject.org/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX data: <https://data.crimproject.org/>
+PREFIX omac: <https://omac.crimproject.org/>
 PREFIX schema: <https://schema.org/>
 
-SELECT ?claimOfStructure ?observer ?segment ?piece ?schemaValue
-{?claimOfStructure a omac:StructureClaim;
-omac:assertedBy ?observer;
-omac:hasMusicTextArg ?segment;
-omac:hasAttributeArg ?schema;
-omac:hasAttributeValueArg ?schemaValue.
+SELECT ?strClaim ?personName ?segment ?piece ?schemaValue
+{
+    ?strClaim a omac:StructureClaim;
+        omac:assertedBy/schema:name ?personName;
+        omac:hasMusicTextArg ?segment;
+        omac:hasAttributeArg ?schema;
+        omac:hasAttributeValueArg ?schemaValue.
 
-?segment a omac:MusicSegment;
-omac:segmentOf ?piece
+    ?segment a omac:MusicSegment;
+        omac:segmentOf ?piece.
 }
 """
 
 [[tabGroups.tabs]]
-name="Claims of similarity"
+name="Claims of similarity 1"
 query="""
-
 ## This query retrieves the model and derivative *segments* identified in a similarity claim
 
-prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-prefix dcterms: <http://purl.org/dc/terms/>
-prefix data: <https://data.crimproject.org/>
-prefix omac: <https://omac.crimproject.org/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX data: <https://data.crimproject.org/>
+PREFIX omac: <https://omac.crimproject.org/>
 PREFIX schema: <https://schema.org/>
 
-SELECT ?claimOfSimilarity ?observer ?model ?derivative ?similarityType
-{?claimOfSimilarity a omac:SimilarityClaim;
-omac:assertedBy ?observer;
-omac:hasModelArg ?model;
-omac:hasDerivativeArg ?derivative;
-omac:hasSimilarityTypeArg ?similarityType
+SELECT ?simClaim ?personName ?model ?derivative ?similarityLabel
+{
+    ?simClaim a omac:SimilarityClaim;
+        omac:assertedBy/schema:name ?personName;
+        omac:hasModelArg ?model;
+        omac:hasDerivativeArg ?derivative;
+        omac:hasSimilarityTypeArg ?similarityType.
+
+    ?similarityType rdfs:label ?similarityLabel.
 }
 """
 
+[[tabGroups.tabs]]
+name="Claims of similarity 2"
+query="""
+## This query retrieves the model and derivative identified in a similarity claim
+
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX data: <https://data.crimproject.org/>
+PREFIX omac: <https://omac.crimproject.org/>
+PREFIX schema: <https://schema.org/>
+
+SELECT ?simClaim ?personName ?modelTxt ?derivativeTxt ?similarityLabel
+{
+    ?simClaim a omac:SimilarityClaim;
+        omac:assertedBy/schema:name ?personName;
+        omac:hasModelArg ?model;
+        omac:hasDerivativeArg ?derivative;
+        omac:hasSimilarityTypeArg ?similarityType.
+
+    ?similarityType rdfs:label ?similarityLabel.
+
+    ?model omac:segmentOf ?modelTxt.
+
+    ?derivative omac:segmentOf ?derivativeTxt.
+}
+"""
+
+[[tabGroups.tabs]]
+name="Construct example"
+query="""
+## This is an example of CONSTRUCT; it builds an RDF graph for masses and their sections
+
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX omac: <https://omac.crimproject.org/>
+PREFIX schema: <https://schema.org/>
+
+CONSTRUCT {
+    ?composition a omac:MusicComposition;
+        dcterms:title ?title;
+        omac:hasAttribute ?genre;
+        omac:hasComposer ?composer;
+        omac:hasSection ?section.
+
+    ?genre a omac:GenreAttribute;
+        omac:hasAttributeValue ?genreValue;
+        rdfs:label "mass"^^xsd:string.
+
+    ?composer a omac:Person;
+        schema:name ?composerName.
+
+    ?section dcterms:title ?sectionTitle.
+}
+WHERE
+{
+    ?composition a omac:MusicComposition;
+        dcterms:title ?title;
+        omac:hasAttribute ?genre;
+        omac:hasComposer ?composer;
+        omac:hasSection ?section.
+
+    ?genre omac:hasAttributeValue ?genreValue.
+
+    ?composer schema:name ?composerName.
+
+    ?section dcterms:title ?sectionTitle.
+
+    FILTER (?genreValue = <https://data.crimproject.org/value/genre/mass>)
+}
+"""
