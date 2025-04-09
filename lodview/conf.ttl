@@ -3,6 +3,7 @@
 @prefix dsim: <https://data.crimproject.org/claim/similarity/>.
 @prefix dp: <https://data.crimproject.org/person/>.
 @prefix ds: <https://data.crimproject.org/source/>.
+@prefix dm: <https://data.crimproject.org/mass/>.
 @prefix dv: <https://data.crimproject.org/value/>.
 @prefix da: <https://data.crimproject.org/attribute/>.
 @prefix dseg:  <https://data.crimproject.org/segment/>.
